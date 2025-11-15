@@ -1,4 +1,5 @@
 from .dns_repertoire import DominatedNoveltyRepertoire
+from .dns_repertoire_ga import DominatedNoveltyGARepertoire
 from .ga_repertoire import GARepertoire
 from .mapelites_repertoire import MapElitesRepertoire
 from .mels_repertoire import MELSRepertoire
@@ -14,6 +15,7 @@ __all__ = [
     "GARepertoire",
     "MapElitesRepertoire",
     "DominatedNoveltyRepertoire",
+    "DominatedNoveltyGARepertoire",
     "UnstructuredRepertoire",
     "MOMERepertoire",
     "MELSRepertoire",

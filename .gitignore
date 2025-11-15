@@ -215,3 +215,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+#logs
+dns_baselines_*
+dns_ga_experiments_*
+dns_ga_tier*
+experiment_logs
+mutation_strategy_test/
