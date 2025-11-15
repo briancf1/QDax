@@ -79,18 +79,18 @@ def calculate_ga_overhead_evals(g_n, num_iterations, population_size, num_ga_chi
 
 EXPERIMENT_CONFIGS = [
     {
-        'name': 'DNS-GA_g150_gen1_iso0.005',
+        'name': 'DNS-GA_g150_gen1_iso0.01',
         'g_n': 150,
         'num_ga_children': 2,
         'num_ga_generations': 1,
-        'iso_sigma': 0.005,
+        'iso_sigma': 0.01,
     },
     {
-        'name': 'DNS-GA_g200_gen2_iso0.005',
+        'name': 'DNS-GA_g200_gen2_iso0.01',
         'g_n': 200,
         'num_ga_children': 2,
         'num_ga_generations': 2,
-        'iso_sigma': 0.005,
+        'iso_sigma': 0.01,
     },
 ]
 
