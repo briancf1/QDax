@@ -30,7 +30,7 @@ FIXED_PARAMS = {
     'batch_size': 100,
     'env_name': 'walker2d_uni',
     'episode_length': 100,
-    'num_iterations': 500,
+    'num_iterations': 3000,
     'seed': 42,
     'policy_hidden_layer_sizes': (64, 64),
     'population_size': 1024,
