@@ -319,7 +319,9 @@ class DominatedNoveltyGARepertoire(DominatedNoveltyRepertoire):
                 )
             
             # Use jax.lax.cond to conditionally compute only one branch
-            use_ga_competition = (generation_counter % self.g_n) == 0
+            # Skip iteration 0 to allow fair comparison (0 % g_n == 0 would trigger GA)
+            # GA triggers at iterations g_n, 2*g_n, 3*g_n, etc.
+            use_ga_competition = (generation_counter > 0) & ((generation_counter % self.g_n) == 0)
             dominated_novelty = jax.lax.cond(
                 use_ga_competition,
                 compute_ga,
