@@ -220,6 +220,245 @@ Analogously:
 
 ---
 
+## If Current Experiments Show No Statistical Significance
+
+### Scenario: DNS-GA doesn't consistently reduce evaluations-to-convergence
+
+This would mean either:
+1. Competition-GA overhead outweighs benefits
+2. Current parameter settings aren't optimal
+3. The forecasting window is wrong (g_n values)
+4. Walker2d_uni isn't sensitive to this approach
+
+### Alternative Experiments to Try
+
+#### 1. **Different Convergence Metrics**
+
+**Current**: Compare evaluations to reach baseline's *final* QD score
+
+**Alternatives:**
+- **Moving target**: Evaluations to reach 90%, 95%, 99% of baseline's score
+- **Time-based**: Which reaches highest QD in fixed time budget?
+- **Sample efficiency curve**: Area under QD-vs-evaluations curve
+- **Pareto frontier**: QD score vs computational cost tradeoff
+
+**Why this helps**: Current metric may be too stringent. If DNS-GA reaches 95% of baseline with 30% fewer evals, that's still valuable.
+
+#### 2. **Extreme Parameter Sweep**
+
+**If moderate parameters don't work, try extremes:**
+
+**Ultra-shallow frequent:**
+- g_n=50, num_generations=1 (20 GA calls, very cheap)
+- Hypothesis: Frequent tiny course corrections
+
+**Ultra-deep rare:**
+- g_n=1500, num_generations=10 (2 GA calls, very expensive)
+- Hypothesis: Strategic deep forecasting at key moments
+
+**Hybrid strategies:**
+- Start frequent+shallow, transition to rare+deep
+- Decreasing frequency schedule: g_n=[100, 300, 1000, ...]
+- Adaptive based on QD improvement rate
+
+#### 3. **Different Environments**
+
+**Walker2d might be too "easy"** - perhaps Competition-GA helps more on harder problems:
+
+**Try:**
+- `ant_uni`: More complex morphology (8 DoF vs 6)
+- `humanoid_uni`: Very high dimensional (17 DoF)
+- `halfcheetah_uni`: Different locomotion pattern
+- Custom maze navigation tasks with local optima
+
+**Hypothesis**: Forecasting helps when landscape is deceptive or multi-modal.
+
+#### 4. **Isolate the GA Component**
+
+**Test if the problem is the GA itself or the integration:**
+
+```python
+# Variant 1: Competition without GA
+# Just use dominated novelty, no forecasting
+# (This is baseline, so skip)
+
+# Variant 2: Random forecasting
+# Run GA with random genotypes instead of population-based
+# Tests if GA structure helps vs just mutation noise
+
+# Variant 3: Greedy forecasting  
+# Instead of GA, use gradient-based lookahead
+# Tests if evolutionary forecasting is better than gradient
+
+# Variant 4: Ensemble forecasting
+# Run multiple parallel GAs with different seeds
+# Take consensus/voting on best directions
+```
+
+#### 5. **Change the Competition Function**
+
+**Current**: GA competes population offspring, selects by dominated novelty
+
+**Alternatives:**
+
+**A. Gradient-boosted competition:**
+- Combine GA forecasting with gradient information
+- Weight by prediction confidence
+
+**B. Diversity-focused competition:**
+- GA explicitly optimizes for descriptor diversity
+- Not just dominated novelty, but BD space coverage
+
+**C. Multi-objective competition:**
+- GA balances fitness, novelty, AND feasibility
+- Penalize solutions unlikely to survive
+
+**D. Curiosity-driven competition:**
+- GA forecasts "surprising" regions
+- Prioritize unexplored descriptor space
+
+#### 6. **Hybrid Approaches**
+
+**A. DNS-GA with occasional MAP-Elites GA:**
+- Most iterations: standard DNS
+- Every 1000 iters: run Population-GA from MAP-Elites paper
+- Combine two different forecast strategies
+
+**B. DNS-GA with curriculum learning:**
+- Start with pure DNS (no overhead, rapid exploration)
+- Gradually introduce Competition-GA as landscape develops
+- Phase out GA when converging (diminishing returns)
+
+**C. Ensemble of strategies:**
+- Partition population into groups
+- Each group uses different g_n and num_generations
+- Best-performing groups get more resources
+
+#### 7. **Meta-Analysis of Failure Modes**
+
+**If results are negative, analyze WHY:**
+
+**Collect extra metrics during runs:**
+```python
+# Add to CSV logs:
+- ga_prediction_accuracy: How often did GA offspring improve?
+- ga_diversity_contribution: Did GA increase BD coverage?
+- ga_survival_rate: What % of GA-influenced decisions survive?
+- overhead_ratio: Actual compute time spent in GA vs DNS
+```
+
+**Analysis:**
+- Is GA predicting wrong directions?
+- Is GA overhead too high for benefit?
+- Do GA offspring get pruned immediately?
+- Does GA cause premature convergence?
+
+#### 8. **Simpler Baselines**
+
+**Maybe the comparison is wrong. Compare DNS-GA to:**
+
+**A. DNS with larger batch size:**
+- DNS batch_size=150 vs DNS-GA batch_size=100+GA
+- Fair evaluation budget comparison
+
+**B. DNS with better mutation:**
+- DNS with adaptive iso_sigma vs DNS-GA with fixed iso_sigma
+- Test if parameter adaptation is the real win
+
+**C. MAP-Elites:**
+- Does DNS-GA beat grid-based QD?
+- Different algorithm entirely, but relevant baseline
+
+#### 9. **Statistical Power Analysis**
+
+**If no significance, maybe need MORE seeds:**
+
+**Current**: 31 seeds might be underpowered if effect is small
+
+**Try:**
+- 100 seeds with simplified configs
+- Or 50 seeds for just the most promising config
+- Bootstrap analysis to estimate required N
+
+**Calculate:**
+- Effect size (Cohen's d)
+- Statistical power
+- Minimum detectable effect
+
+#### 10. **Qualitative Analysis**
+
+**Even without statistical significance, look for patterns:**
+
+**Success cases:**
+- Which seeds showed large improvements?
+- What population states preceded successful GA calls?
+- Any commonalities in trajectories?
+
+**Failure cases:**
+- Which seeds performed worse than baseline?
+- Did GA cause problems in specific phases?
+- Systematic failures vs random noise?
+
+**Archive analysis:**
+- Does DNS-GA find different solutions than DNS?
+- Quality-diversity tradeoff: better diversity but lower quality?
+- Niche discovery: does GA explore unique regions?
+
+### Priority Ranking (If Current Results Inconclusive)
+
+**Quick wins (1-2 days):**
+1. Try different convergence metrics (#1)
+2. Test extreme parameters (#2)
+3. Different environment (#3)
+
+**Medium effort (1 week):**
+4. Meta-analysis with extra metrics (#7)
+5. Hybrid curriculum approach (#6B)
+6. Qualitative archive analysis (#10)
+
+**Research projects (1+ months):**
+7. Alternative competition functions (#5)
+8. Adaptive strategies (already documented above)
+9. Meta-learning approaches (already documented above)
+
+### Decision Tree
+
+```
+Current experiments complete
+    │
+    ├─ Statistical significance found?
+    │   ├─ YES → Write paper! 📝
+    │   └─ NO → 
+    │       ├─ Effect size small but consistent?
+    │       │   ├─ YES → Try #1 (different metrics)
+    │       │   └─ NO → Try #3 (different environment)
+    │       │
+    │       ├─ High variance across seeds?
+    │       │   ├─ YES → Try #9 (more seeds)
+    │       │   └─ NO → Try #7 (meta-analysis)
+    │       │
+    │       └─ Systematic failures?
+    │           ├─ YES → Try #5 (different competition)
+    │           └─ NO → Try #2 (extreme parameters)
+```
+
+---
+
+## Notes from November 15, 2025
+
+**Context**: Running 95 experiments (31 seeds × 3 configs + sanity checks) to determine if Competition-GA significantly reduces evaluations-to-convergence.
+
+**Key insight from today**: Sanity check shows 0.71% difference between DNS baseline and DNS-GA with g_n=99999. This is expected stochastic variation from parallel execution in independent processes. Earlier sequential runs showed identical results because they shared JIT compilation and JAX state.
+
+**If no significance found**: The above alternatives provide concrete next steps. Priority should be:
+1. Different convergence metrics (maybe we're measuring wrong thing)
+2. Different environments (maybe walker2d isn't hard enough)
+3. Meta-analysis of when/why GA helps (even if not statistically significant overall)
+
+**Meta-observation**: Negative results are still valuable! Understanding when Competition-GA doesn't help is important for the field. Could lead to paper: "When Does Evolutionary Forecasting Help Quality-Diversity?"
+
+---
+
 ## Notes from November 14, 2025
 
 **Context**: Running experiments to validate if Competition-GA (evolutionary forecasting) helps DNS convergence.
