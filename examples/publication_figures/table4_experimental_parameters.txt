@@ -1,0 +1,27 @@
+====================================================================================================
+TABLE 4: EXPERIMENTAL PARAMETERS
+====================================================================================================
+
+     Category            Parameter            Ant Omni        Walker2d Uni                 Arm                                 Description
+DNS Algorithm           Batch Size                 100                 100                 256 Number of solutions evaluated per iteration
+DNS Algorithm      Population Size                1024                1024                2048                  Size of MAP-Elites archive
+DNS Algorithm     Total Iterations                3000                3000               10000                 Maximum training iterations
+DNS Algorithm            iso_sigma               0.010               0.010                0.05    Isotropic Gaussian noise for exploration
+DNS Algorithm           line_sigma                0.05                0.05                0.10                         Line mutation noise
+DNS Algorithm          k (novelty)                   3                   3                   3    Nearest neighbors for novelty estimation
+       DNS-GA   g_n (GA Frequency)           300, 1000           300, 1000           300, 1000                 Iterations between GA calls
+       DNS-GA       GA Generations 2 (g300), 4 (g1000) 2 (g300), 4 (g1000) 2 (g300), 4 (g1000)           Number of GA generations per call
+       DNS-GA          GA Children                   2                   2                   2             Offspring per parent in GA tree
+  Environment            Task Type          Locomotion          Locomotion        Manipulation                    Category of robotic task
+  Environment   Degrees of Freedom                   8                   6                 100            Dimensionality of solution space
+  Environment Policy Hidden Layers            (64, 64)            (64, 64)    N/A (analytical)                 Neural network architecture
+  Environment       Episode Length                 100                 100    N/A (analytical)         Simulation timesteps per evaluation
+  Environment      Descriptor Dims        2 (final xy)        2 (final xy) 2 (end-effector xy)            Dimensionality of behavior space
+ Experimental         Random Seeds                  31                  31                  31                  Number of independent runs
+
+====================================================================================================
+Notes:
+  - All experiments use QDax library with JAX for GPU acceleration
+  - Ablation study (Table 2) tests g_n ∈ {300, 500, 1000, 2000} on Walker2d Uni
+  - Baseline configuration: DNS without GA enhancement (g_n = ∞)
+  - iso_sigma=0.005 tested on Walker2d for hyperparameter sensitivity (Figure 4)

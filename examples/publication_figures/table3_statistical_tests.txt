@@ -1,0 +1,11 @@
+================================================================================
+TABLE 3: STATISTICAL TESTS - ENVIRONMENT COMPARISONS
+================================================================================
+
+          Environment   Metric Baseline DNS-GA Best t-statistic p-value Significant
+     Ant Omni (8 DoF) QD Score  281,284     275,634       1.053  0.3006           -
+Walker 2D Uni (6 DoF) QD Score  410,226     408,678       2.418  0.0219           *
+        Arm (100 DoF) QD Score     -127        -128      15.798  <0.001 *** (worse)
+
+================================================================================
+Significance levels: *** p<0.001, ** p<0.01, * p<0.05, - not significant
