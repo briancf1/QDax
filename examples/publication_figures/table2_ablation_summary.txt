@@ -1,0 +1,15 @@
+================================================================================
+TABLE 2: ABLATION STUDY - GA FREQUENCY COMPARISON (Walker2d Uni)
+================================================================================
+
+ g_n  GA Calls Mean QD Score Std Dev
+ 300        10       410,310   4,647
+ 500         6       412,115   7,159
+1000         3       410,592   5,134
+2000         1       412,361   3,371
+
+================================================================================
+Notes:
+  - One-way ANOVA: F=0.197, p=0.897
+  - No significant differences between g_n values (p > 0.05)
+  - Conclusion: GA frequency (g_n) does not significantly impact final QD score

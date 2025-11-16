@@ -1,0 +1,11 @@
+================================================================================
+TABLE 1: COMPREHENSIVE ENVIRONMENT COMPARISON
+================================================================================
+
+             Environment  DoF         Type Baseline QD DNS-GA QD Success Rate Savings % p-value  Significant
+                Ant Omni    8   Locomotion     282,083   275,634          42%       59%  <0.001 Yes (better)
+Walker2d Uni (iso=0.010)    6   Locomotion     410,331   408,678          23%      0.3%    0.37           No
+                     Arm  100 Manipulation        -127      -128        19.4%        2%  <0.001  Yes (worse)
+
+================================================================================
+Note: Arm shows significant difference but DNS-GA QD score is WORSE than baseline

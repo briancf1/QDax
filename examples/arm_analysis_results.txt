@@ -1,0 +1,178 @@
+================================================================================
+ARM MANIPULATION - SEED VARIABILITY ANALYSIS RESULTS
+================================================================================
+Generated: 2025-11-16 13:03:07
+================================================================================
+
+================================================================================
+1. DATASET SUMMARY
+================================================================================
+Total experiments: 93
+Configurations: ['DNS_baseline' 'DNS-GA_g300_gen2' 'DNS-GA_g1000_gen4']
+Seeds per config: {'DNS-GA_g1000_gen4': 31, 'DNS-GA_g300_gen2': 31, 'DNS_baseline': 31}
+
+Basic statistics:
+                         mean       std         min         max
+config_name                                                    
+DNS-GA_g1000_gen4 -128.224239  0.321997 -129.104324 -127.586205
+DNS-GA_g300_gen2  -128.059526  0.287173 -128.617447 -127.595596
+DNS_baseline      -127.318076  0.252570 -127.914581 -126.924637
+
+
+================================================================================
+2. CONVERGENCE EFFICIENCY STATISTICS (31 SEEDS)
+================================================================================
+
+DNS-GA_g300_gen2:
+  ============================================================
+  Success rate: 1/31 seeds (3.2%)
+
+  Evaluation Savings:
+    Mean:                200 evals (  2.00%)
+    Median:              200 evals (  2.00%)
+    Std:                 nan evals (   nan%)
+    Min:                 200 evals (  2.00%)
+    Max:                 200 evals (  2.00%)
+
+  Seeds with positive savings: 1/1 (100.0%)
+
+  Mean evaluations to convergence:
+    Baseline:                 10,000 evals (always)
+    DNS-GA (mean):             9,800 evals
+
+  Best performer:  Seed 95781 (+2.00%)
+  Worst performer: Seed 95781 (+2.00%)
+
+DNS-GA_g1000_gen4:
+  ============================================================
+  Success rate: 6/31 seeds (19.4%)
+
+  Evaluation Savings:
+    Mean:                217 evals (  2.17%)
+    Median:              150 evals (  1.50%)
+    Std:                 147 evals (  1.47%)
+    Min:                 100 evals (  1.00%)
+    Max:                 400 evals (  4.00%)
+
+  Seeds with positive savings: 6/6 (100.0%)
+
+  Mean evaluations to convergence:
+    Baseline:                 10,000 evals (always)
+    DNS-GA (mean):             9,783 evals
+
+  Best performer:  Seed 99314 (+4.00%)
+  Worst performer: Seed 24651 (+1.00%)
+
+
+================================================================================
+3. SUCCESS RATE BREAKDOWN
+================================================================================
+
+Defining 'success' as: DNS-GA reaches baseline convergence with fewer evaluations
+================================================================================
+
+DNS-GA_g300_gen2:
+  ============================================================
+
+  1. Convergence Rate:
+     1/31 seeds (3.2%)
+     → Reached baseline's final QD score within 10000 iterations
+
+  2. Efficiency Success Rate (converged seeds only):
+     1/1 seeds (100.0%)
+     → Converged faster than baseline
+
+  3. Overall Success Rate (all 31 seeds):
+     1/31 seeds (3.2%)
+     → Both converged AND faster than baseline
+
+  Evaluation Savings (converged seeds):
+     Mean:    2.00%
+     Median:  2.00%
+     Std:     nan%
+
+  Best performer:  Seed 95781 (+2.00%)
+  Worst performer: Seed 95781 (+2.00%)
+
+DNS-GA_g1000_gen4:
+  ============================================================
+
+  1. Convergence Rate:
+     6/31 seeds (19.4%)
+     → Reached baseline's final QD score within 10000 iterations
+
+  2. Efficiency Success Rate (converged seeds only):
+     6/6 seeds (100.0%)
+     → Converged faster than baseline
+
+  3. Overall Success Rate (all 31 seeds):
+     6/31 seeds (19.4%)
+     → Both converged AND faster than baseline
+
+  Evaluation Savings (converged seeds):
+     Mean:    2.17%
+     Median:  1.50%
+     Std:     1.47%
+
+  Best performer:  Seed 99314 (+4.00%)
+  Worst performer: Seed 24651 (+1.00%)
+
+
+================================================================================
+4. SUMMARY TABLE: Success Rate Comparison
+================================================================================
+
+           config  convergence_rate  efficiency_rate  overall_success  mean_savings
+ DNS-GA_g300_gen2          3.225806            100.0         3.225806      2.000000
+DNS-GA_g1000_gen4         19.354839            100.0        19.354839      2.166667
+
+
+================================================================================
+5. STATISTICAL COMPARISONS
+================================================================================
+
+--- DNS-GA vs Baseline (All Converged Seeds) ---
+Baseline mean: 10,000 evals
+DNS-GA mean: 9,786 evals
+Mean difference: 214 evals
+t-statistic: -9.324
+p-value: 0.0000
+✓ SIGNIFICANT: DNS-GA reaches convergence with FEWER evaluations
+
+--- g300_gen2 vs g1000_gen4 Comparison ---
+DNS-GA_g300_gen2 success: 1/31 (3.2%)
+DNS-GA_g1000_gen4 success: 6/31 (19.4%)
+
+Evaluation savings (converged seeds only):
+  DNS-GA_g300_gen2: 2.00% ± nan%
+  DNS-GA_g1000_gen4: 2.17% ± 1.47%
+
+
+================================================================================
+6. DISTRIBUTION ANALYSIS
+================================================================================
+
+All DNS-GA configs combined (n=7 converged seeds):
+  Mean: 2.14%
+  Median: 2.00%
+  Std: 1.35%
+  Min: 1.00%
+  Max: 4.00%
+  Q1: 1.00%
+  Q3: 3.00%
+
+  Positive savings: 7/7 (100.0%)
+
+  Skewness: 0.798 (right-skewed, more low savings)
+  Kurtosis: -1.280 (light tails, fewer outliers)
+
+
+================================================================================
+CONCLUSION
+================================================================================
+
+Report 'Overall Success Rate' as the true success rate:
+  → Percentage of all seeds that both converged AND saved evaluations
+This is the most honest metric for publication.
+================================================================================
+
